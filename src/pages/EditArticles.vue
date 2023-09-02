@@ -1,6 +1,6 @@
 <script>
 export default {
-name: "ContentPadder"
+name: "EditArticles"
 }
 </script>
 
