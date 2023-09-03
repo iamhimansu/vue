@@ -1,2 +1,0 @@
-"use strict";(self["webpackChunkpersonal"]=self["webpackChunkpersonal"]||[]).push([[142],{3142:function(e,i,r){r.r(i),r.d(i,{default:function(){return c}});var n=r(3396);function t(e,i,r,t,a,s){return(0,n.wg)(),(0,n.iD)("div",null," Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium adipisci asperiores cum error ipsam iure laboriosam sint? At, cumque et nam neque nobis placeat recusandae rem similique tempora ut velit. ")}var a={name:"EditArticles"},s=r(89);const u=(0,s.Z)(a,[["render",t]]);var c=u}}]);
-//# sourceMappingURL=142.ecf5f135.js.map

@@ -1,11 +1,13 @@
 <script>
 export default {
-name: "ArticleSearchBox"
+  name: "ArticleSearchBox"
 }
 </script>
 
 <template>
-  $END$
+<div class="p-2">
+  <input type="search" class="rounded-full w-full h-10 px-6 border outline-0 text-xs" placeholder="Search...">
+</div>
 </template>
 
 <style scoped>

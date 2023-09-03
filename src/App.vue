@@ -1,26 +1,30 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <top-nav-bar></top-nav-bar>
+  <content-padded>
+  </content-padded>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+
+import TopNavBar from "@/components/TopNavBar.vue";
+import ContentPadded from "@/components/ContentPaddedRouterView.vue";
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
-  }
+  components: {ContentPadded, TopNavBar},
+  async created() {
+    await this.$store.dispatch('initializeDB');
+  },
 }
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+
+<style scoped>
+@import "@/assets/css/app.css";
+@import "bootstrap-icons";
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;1,300&family=Roboto:wght@300;400;500;700&display=swap');
+
+body * {
+  font-family: 'Poppins', sans-serif;
 }
 </style>
