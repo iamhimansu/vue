@@ -3,7 +3,10 @@ const path = require('path-browserify');
 
 module.exports = defineConfig({
     transpileDependencies: true,
+    runtimeCompiler: true,
+    productionSourceMap: false,
     outputDir: 'deploy',
+    publicPath: './',
     configureWebpack: {
         resolve: {
             fallback: {

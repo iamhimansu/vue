@@ -4,7 +4,7 @@ import axios from "axios";
 import * as path from "path";
 
 const base64 = require('base-64');
-const apiUrl = `https://api.github.com/repos/iamhimansu/personalDB/contents/wm.db`;
+const apiUrl = `https://api.github.com/repos/iamhimansu/personal/contents/deploy/wm.db`;
 // const apiDownloadUrl = `https://api.github.com/repos/iamhimansu/personalDB/contents/wm.db`;
 
 const token = "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"
@@ -25,7 +25,7 @@ export const store = createStore({
         db: null,
         isDBLoaded: false,
         processingList: [],
-        isDevelopment: true,
+        isDevelopment: false,
     },
     mutations: {
         SET_DATA(state, key, newData) {
