@@ -4,10 +4,10 @@ import axios from "axios";
 import * as path from "path";
 
 const base64 = require('base-64');
-const apiUrl = `https://api.github.com/repos/iamhimansu/personal/contents/deploy/wm.db`;
+const apiUrl = `https://api.github.com/repos/iamhimansu/personalDB/contents/wm.db`;
 // const apiDownloadUrl = `https://api.github.com/repos/iamhimansu/personalDB/contents/wm.db`;
 
-const token = "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"
+const token = "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"
 const headers = {
     'Authorization': `token ${token}`,
     'Content-Type': 'application/json',
@@ -25,7 +25,7 @@ export const store = createStore({
         db: null,
         isDBLoaded: false,
         processingList: [],
-        isDevelopment: false,
+        isDevelopment: true,
     },
     mutations: {
         SET_DATA(state, key, newData) {
@@ -66,7 +66,7 @@ export const store = createStore({
             } else {
                 commit('setDBLoadMessage', 'Initiating Download Request');
                 const myHeaders = new Headers();
-                myHeaders.append("Authorization", "token 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");
+                myHeaders.append("Authorization", "token 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");
                 myHeaders.append("Accept", "application/vnd.github.v3.raw");
 
                 const requestOptions = {
