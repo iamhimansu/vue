@@ -1,17 +1,40 @@
 <template>
-  <top-nav-bar></top-nav-bar>
-  <content-padded>
+  <left-nav-bar :set-current-active-left-nav="setCurrentActiveLeftNav" :current-active-left-nav="currentActiveLeftNav"></left-nav-bar>
+  <content-padded v-if="isDBLoaded">
   </content-padded>
+  <overlay-box v-if="isSomethingUnderProcess" :lists="listOfProcess"></overlay-box>
 </template>
 
 <script>
 
-import TopNavBar from "@/components/TopNavBar.vue";
 import ContentPadded from "@/components/ContentPaddedRouterView.vue";
+import OverlayBox from "@/components/OverlayBox.vue";
+import LeftNavBar from "@/components/LeftNavBar.vue";
 
 export default {
   name: 'App',
-  components: {ContentPadded, TopNavBar},
+  data() {
+    return {
+      currentActiveLeftNav: 'home'
+    }
+  },
+  methods: {
+    setCurrentActiveLeftNav(name) {
+      this.currentActiveLeftNav = name;
+    }
+  },
+  computed: {
+    isDBLoaded() {
+      return this.$store.state.isDBLoaded;
+    },
+    isSomethingUnderProcess() {
+      return this.$store.state.processingList.length > 0;
+    },
+    listOfProcess() {
+      return this.$store.state.processingList;
+    }
+  },
+  components: {LeftNavBar, OverlayBox, ContentPadded},
   async created() {
     await this.$store.dispatch('initializeDB');
   },
@@ -20,11 +43,5 @@ export default {
 
 
 <style scoped>
-@import "@/assets/css/app.css";
-@import "bootstrap-icons";
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;1,300&family=Roboto:wght@300;400;500;700&display=swap');
 
-body * {
-  font-family: 'Poppins', sans-serif;
-}
 </style>

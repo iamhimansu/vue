@@ -3,6 +3,7 @@ import WelcomeHome from "@/pages/WelcomeHome.vue";
 
 const router = createRouter({
     history: createWebHistory(),
+    mode: 'history', // Use history mode for cleaner URLs
     routes: [
         {
             name: 'Welcome',
@@ -28,6 +29,12 @@ const router = createRouter({
             name: 'SignUpPage',
             path: '/register',
             component: () => import('@/pages/RegisterPage.vue')
+        },
+        {
+            name: 'ArticleView',
+            path: '/article/:id',
+            props: true,
+            component: () => import('@/pages/ArticleView.vue')
         },
     ]
 });

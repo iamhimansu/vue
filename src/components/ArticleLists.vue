@@ -1,36 +1,42 @@
 <script>
-import ArticleSearchBox from "@/components/ArticleSearchBox.vue";
 import PeopleSuggestions from "@/components/PeopleSuggestions.vue";
 import {mapGetters} from "vuex";
+import TopArticles from "@/components/TopArticles.vue";
 
 
 export default {
   name: "ArticleLists",
-  components: {PeopleSuggestions, ArticleSearchBox},
+  components: {TopArticles, PeopleSuggestions},
   computed: {
     ...mapGetters(['getDB']),
   },
   data() {
     return {
-      articleLists: [1, 2, 3, 4, 5, 6],
+      topArticles: [],
+      topNArticles: 4,
       userPageSize: 10,
       totalCount: 0,
       db: null,
       users: [],
+      articles: [],
     };
   },
 
-  beforeMount() {
-    const limit = this.userPageSize, offset = 10;
+  created() {
+    const limit = this.userPageSize, offset = 0;
     this.totalRowCount();
-    this.select(limit, offset)
+    this.select(limit, offset);
+    this.findAllArticles();
+    this.findTopArticles(this.topNArticles);
   },
 
   methods: {
-
+    articleLink(articleId) {
+      return `/article/${articleId}`;
+    },
     totalRowCount() {
       try {
-        let totalCount = 'SELECT COUNT(*) as total FROM users;';
+        let totalCount = 'SELECT COUNT(*) as total FROM core_users;';
         const total = this.getDB.prepare(totalCount);
         //
         total.step();
@@ -41,9 +47,8 @@ export default {
 
     },
     select(limit = 10, offset = 0) {
-      // console.log(limit, offset)
       this.users = [];
-      let selectUsers = `SELECT * FROM users LIMIT ? OFFSET ?`;
+      let selectUsers = `SELECT * FROM core_users LIMIT ? OFFSET ?`;
 
       //
       const stmt = this.getDB.prepare(selectUsers);
@@ -53,62 +58,79 @@ export default {
         this.users.push(stmt.getAsObject());
       }
       stmt.free();
+    },
+    findAllArticles(limit = 10, offset = 0) {
+      //Skip top 4 articles
+      const query = `SELECT * FROM articles WHERE id NOT IN (SELECT id FROM articles ORDER BY id DESC LIMIT 4) ORDER BY id DESC LIMIT ? OFFSET ?`;
+      //
+      const stmt = this.getDB.prepare(query);
+      stmt.bind([limit, offset]);
+      //
+      while (stmt.step()) {
+        this.articles.push(stmt.getAsObject());
+      }
+      stmt.free();
+    },
+    findTopArticles(limit = 4) {
+      const query = `SELECT * FROM articles ORDER BY id DESC LIMIT ?`;
+      //
+      const stmt = this.getDB.prepare(query);
+      stmt.bind([limit]);
+
+      //
+      while (stmt.step()) {
+        this.topArticles.push(stmt.getAsObject());
+      }
+      stmt.free();
+    },
+    formatDate(timestamp) {
+      const options = { year: 'numeric', month: 'long', day: 'numeric' };
+      const date = new Date(timestamp); // Convert the timestamp to milliseconds
+      return date.toLocaleDateString('en-US', options);
     }
   }
 };
 </script>
 <template>
-  <div class="flex flex-row">
-    <div class="w-4/6 min-h-screen border-r p-8">
-      <ArticleSearchBox></ArticleSearchBox>
-      <div class="flex flex-row place-items-center justify-between border-b p-2 py-4 mb-6">
-        <div><h2 class="font-bold">Articles</h2></div>
-        <div>
-          <button class="p-2 px-12 border rounded-full text-xs font-bold hover:bg-gray-100">
-            <span>Following</span>
-          </button>
-        </div>
-      </div>
-      <div v-for="(article, index) in articleLists" :key="index">
-        <div class="border-b flex flex-col place-items-start gap-3 mb-3 pb-4 w-full h-56">
-          <div class="flex flex-row place-items-center gap-3 h-12">
-            <img alt="Rounded avatar" class="w-10 h-10 rounded-full"
-                 src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"/>
-            <div class="flex flex-col">
-              <h5 class="text-xs font-bold">User &mdash; Apr 16, 2023</h5>
-              <div class="text-xs text-gray-800">Software Developer</div>
+  <div class="flex flex-col sm:flex-row divide-x">
+    <div class="w-full md:w-4/6 min-h-screen p-4 md:p-12">
+      <top-articles :top-articles="topArticles"></top-articles>
+
+      <div v-for="(article, index) in articles" :key="index">
+        <div class="max-w-2xl py-4 mx-auto bg-white dark:bg-gray-800 mb-5 border-b" style="cursor: auto;">
+          <div class="flex items-center justify-between">
+            <span class="text-sm font-light text-gray-600 dark:text-gray-400">{{ formatDate(article.createdAt) }}</span>
+            <a class="px-3 py-1 text-sm font-bold text-gray-100 transition-colors duration-200 transform bg-gray-600 rounded cursor-pointer hover:bg-gray-500">JavaScript</a>
+          </div>
+          <div class="mt-2">
+            <router-link
+                :to="{ path: articleLink(article.id)}"
+                class="text-2xl font-bold text-gray-700 dark:text-white hover:text-gray-600 dark:hover:text-gray-200 hover:underline">
+              {{ article.title }}
+            </router-link>
+
+            <p class="mt-2 text-gray-600 dark:text-gray-300"
+               v-html="JSON.parse(article.json_content).blocks[0].data.text"></p>
+
+          </div>
+          <div class="flex items-center justify-between mt-4">
+            <router-link
+                :to="{ path: articleLink(article.id)}"
+                class="text-blue-600 dark:text-blue-400 hover:underline">Read more ⟶
+            </router-link>
+            <div class="flex items-center">
+              <img alt="Author Photo" class="object-cover w-10 h-10 mx-4 rounded-full sm:block"
+                   src="https://avatars.githubusercontent.com/u/44632846?v=4">
+              <a class="font-bold text-gray-700 cursor-pointer dark:text-gray-200">Himanshu</a>
             </div>
           </div>
-          <div class="article-content">
-            <div class="flex flex-row w-11/12 gap-4">
-              <div class="flex flex-col gap-2">
-                <div class="article-title">
-                  <h3 class="font-bold text-lg">8 Psychology-Based Design Hack That Will Make You A Better UX
-                    Designer</h3>
-                </div>
-                <div class="article-description text-xs text-gray-600 line-clamp-3">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis commodi cupiditate dicta
-                  dignissimos ex repellat. Beatae blanditiis ea error eum minus. Dolore neque quisquam soluta veritatis
-                  voluptates! Blanditiis, eveniet suscipit.
-                </div>
-              </div>
-              <div class="w-2/12">
-                <div class="w-40 h-24 overflow-hidden rounded bg-center bg-cover bg-no-repeat bg-black"
-                     style="background-image: url('https://images.unsplash.com/photo-1693429448772-845e333e3188?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1854&q=80')">
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="article-readtime">
-                <span class="text-[10px] bg-gray-100 p-2 px-4 rounded-full text-gray-600"><i
-                    class="bi bi-clock"></i> 4 min read</span>
-          </div>
         </div>
+
       </div>
     </div>
-    <div class="w-2/6 p-8">
-      <PeopleSuggestions :page-size="userPageSize" :select="select" :total-count="totalCount"
-                         :users="users"></PeopleSuggestions>
+    <div class="w-full md:w-2/6 p-4 md:p-8">
+      <people-suggestions :page-size="userPageSize" :select="select" :total-count="totalCount"
+                          :users="users"></people-suggestions>
     </div>
   </div>
 </template>

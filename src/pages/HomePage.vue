@@ -12,11 +12,8 @@ export default {
   <ArticleLists></ArticleLists>
 </template>
 
-<style scoped>
+<style>
 @import "@/assets/css/app.css";
-@import "../../node_modules/bootstrap-icons";
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;1,300&family=Roboto:wght@300;400;500;700&display=swap');
-
 body * {
   font-family: 'Poppins', sans-serif;
 }

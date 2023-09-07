@@ -1,12 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;1,300&family=Roboto:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,900&family=Inconsolata:wght@200;300;400;500;600;700;800;900&display=swap');
+
+@import "@/assets/css/app.css";
+@import "bootstrap-icons";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-button {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center;
-    line-height: 1rem;
-    width: 90px;
+body * {
+    font-family: 'Poppins', sans-serif;
+}
+
+.font-crimson {
+    font-family: "Crimson pro", sans-serif;
+}
+
+.font-inconsolata {
+    font-family: 'Inconsolata', monospace;
+}
+
+.article-title {
+    color: #131415;
+    font-size: 50px;
+    line-height: 66px;
+    font-weight: 600;
+}
+
+.article-view code{
+    font-size: 14px;
+    padding: 5px;
+    color: black;
+    border-radius: 3px;
+    font-family: 'Inconsolata', monospace;
+    white-space: pre;
+    background-color: #f3f4f6;
+    font-weight: bold;
 }

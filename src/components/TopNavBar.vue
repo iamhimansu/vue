@@ -1,34 +1,25 @@
 <script>
+
+import GlobalSearch from "@/components/GlobalSearch.vue";
+
 export default {
-  name: "TopNavBar"
+  name: "TopNavBar",
+  components: {GlobalSearch},
+
 }
 </script>
 
 <template>
-  <nav
-      class="flex-no-wrap flex w-full bg-gray-50 max-w-full h-16 border-b place-items-center p-2 flex-row justify-between px-6 fixed top-0">
-    <div class="h-full">
-      <router-link to="/">
-        <button class="hover:bg-gray-100 h-full"><i class="bi bi-justify text-2xl"></i></button>
-      </router-link>
-
+  <div class="w-full h-16 border-b flex place-items-center">
+    <div class="flex w-9/12 md:w-8/12 md:place-items-center md:pl-20">
+    <global-search></global-search>
     </div>
-    <div class="reader uppercase font-bold">
-      <router-link to="/home">reader</router-link>
+    <div class="w-full md:w-4/12 flex justify-end md:place-content-between px-4">
+        <div class="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
+          <span class="font-medium text-gray-600 dark:text-gray-300">H</span>
+        </div>
     </div>
-    <div class="w-10 flex flex-row justify-end space-x-2">
-      <button class="hover:bg-gray-100 p-2">
-        <i class="bi bi-bell text-lg"></i>
-      </button>
-      <router-link class="hover:bg-gray-100 p-2" to="/login">
-        <i class="bi bi-person text-lg"></i>
-      </router-link>
-      <router-link class="flex flex-row place-items-center hover:bg-gray-100 font-bold p-2 px-4 text-xs space-x-2"
-                   to="/create">
-        <i class="bi bi-pencil-square text-lg"></i>
-      </router-link>
-    </div>
-  </nav>
+  </div>
 </template>
 
 <style scoped>

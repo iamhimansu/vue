@@ -1,13 +1,14 @@
 <script>
+import EditorJsLayout from "@/components/EditorJsLayout.vue";
+
 export default {
-  name: "EditArticles"
+  name: "EditArticles",
+  components: {EditorJsLayout}
 }
 </script>
 
 <template>
-<div>
-  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium adipisci asperiores cum error ipsam iure laboriosam sint? At, cumque et nam neque nobis placeat recusandae rem similique tempora ut velit.
-</div>
+  <editor-js-layout/>
 </template>
 
 <style scoped>

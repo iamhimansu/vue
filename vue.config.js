@@ -9,20 +9,12 @@ module.exports = defineConfig({
             fallback: {
                 path: require.resolve('path-browserify'),
                 fs: false, // or require.resolve('fs'),
-                crypto: false
+                crypto: false,
+                util: require.resolve("util"),
+                os: require.resolve("os-browserify/browser"),
+                url: require.resolve("url")
             },
 
-        },
-        experiments: {
-            asyncWebAssembly: true,
-        },
-        module: {
-            rules: [
-                {
-                    test: /\.wasm$/,
-                    type: 'webassembly/async',
-                },
-            ],
         },
     },
 })
